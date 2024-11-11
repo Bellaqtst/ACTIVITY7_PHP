@@ -33,62 +33,87 @@ if (isset($_GET['delete'])) {
     <title>Show Details</title>
     <?php include('../layout/style.php'); ?>
     <style>
-    .entries-container {
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #ffe3e3; /* Soft pink background */
-    border: 1px solid #e2a4a4;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.entries-container h2 {
-    text-align: center;
-    color: #d35d6e; /* Dark pink heading */
-    font-size: 1.8em;
-    margin-bottom: 20px;
-}
-.entry-card {
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #e2a4a4;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.entry-card p {
-    margin: 5px 0;
-    color: #555;
-}
-.entry-card .action-links a {
-    display: inline-block;
-    margin-right: 10px;
-    padding: 8px 12px;
-    font-size: 0.9em;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-}
-.entry-card .action-links .edit-btn {
-    background-color: #7ca982; /* Light green for edit */
-}
-.entry-card .action-links .delete-btn {
-    background-color: #d35d6e; /* Soft red for delete */
-}
-.add-entry-link {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 15px;
-    background-color: #5a9ad4; /* Light blue for add new entry */
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1em;
-}
-.add-entry-link:hover {
-    background-color: #487a9e; /* Darker blue on hover */
-}
+        .entries-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffe3e3; /* Soft pink background */
+            border: 1px solid #e2a4a4;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
+        .entries-container h2 {
+            text-align: center;
+            color: #d35d6e; /* Dark pink heading */
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #e2a4a4;
+            border-radius: 5px;
+        }
+
+        .search-container button {
+            padding: 8px 12px;
+            color: #fff;
+            background-color: #d35d6e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #b24b5b;
+        }
+
+        /* Table structure */
+        .table-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .table-header {
+            font-weight: bold;
+            color: #d35d6e;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2a4a4;
+        }
+
+        /* Entry cells styling */
+        .entry-cell {
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            color: #555;
+        }
+
+        /* Action buttons */
+        .action-links a {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .action-links .edit-btn {
+            background-color: #7ca982;
+        }
+        .action-links .delete-btn {
+            background-color: #d35d6e;
+        }
     </style>
 </head>
 <body class="sb-nav-fixed">
@@ -97,22 +122,63 @@ if (isset($_GET['delete'])) {
         <?php include('../layout/navigation.php'); ?>
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid px-4">
-                    <div class="entries-container">
-                        <h2>Submitted Details</h2>
-                        <?php foreach ($entries as $index => $entry): ?>
-                            <div class="entry-card">
-                                <p><strong>Name:</strong> <?php echo htmlspecialchars($entry['name'], ENT_QUOTES, 'UTF-8'); ?></p>
-                                <p><strong>Age:</strong> <?php echo htmlspecialchars($entry['age'], ENT_QUOTES, 'UTF-8'); ?></p>
-                                <p><strong>Gender:</strong> <?php echo htmlspecialchars($entry['gender'], ENT_QUOTES, 'UTF-8'); ?></p>
-                                <div class="action-links">
-                                    <a href="addForm.php?edit=<?php echo $index; ?>" class="edit-btn">Edit</a>
-                                    <a href="showDetails.php?delete=<?php echo $index; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this entry?');">Delete</a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                        <a href="addForm.php" class="add-entry-link">Add New Form</a>
+                <div class="entries-container">
+                    <h2>Submitted Details</h2>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            DataTable Example
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Age</th>
+                                        <th>Gender</th>
+                                        <th>Campus</th>
+                                        <th>College</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Age</th>
+                                        <th>Gender</th>
+                                        <th>Campus</th>
+                                        <th>College</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <?php foreach ($entries as $index => $entry): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($entry['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($entry['age'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($entry['gender'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($entry['campus'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($entry['college'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td>
+                                                <a href="addForm.php?edit=<?php echo $index; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                                <a href="showDetails.php?delete=<?php echo $index; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this entry?');">Delete</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
+                    <!-- Include DataTable JS script -->
+                    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            $('#datatablesSimple').DataTable();
+                        });
+                    </script>
+
+                    <a href="addForm.php" class="add-entry-link">Add New Form</a>
                 </div>
             </main>
             <?php include('../layout/footer.php'); ?>

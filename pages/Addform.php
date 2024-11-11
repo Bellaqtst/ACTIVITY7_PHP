@@ -15,14 +15,15 @@ if (isset($_POST['submit'])) {
     $name = htmlspecialchars($_POST['name']);
     $age = htmlspecialchars($_POST['age']);
     $gender = htmlspecialchars($_POST['gender']);
-    
+    $campus = htmlspecialchars($_POST['campus']);
+    $college = htmlspecialchars($_POST['college']);
    
     if (isset($_POST['edit_index'])) {
         $index = $_POST['edit_index'];
-        $_SESSION['entries'][$index] = compact('name', 'age', 'gender');
+        $_SESSION['entries'][$index] = compact('name', 'age', 'gender', 'campus', 'college');
     } else {
         
-        $_SESSION['entries'][] = compact('name', 'age', 'gender');
+        $_SESSION['entries'][] = compact('name', 'age', 'gender', 'campus', 'college');
     }
     
     header('Location: showDetails.php');
@@ -102,32 +103,54 @@ if (isset($_POST['submit'])) {
                         <div class="form-container">
                             <h2><?php echo isset($_GET['edit']) ? 'Update' : 'Add'; ?> Form</h2>
                             <form action="" method="POST">
-                                <?php if (isset($_GET['edit'])): ?>
-                                    <?php 
-                                        $index = $_GET['edit'];
-                                        $entry = $_SESSION['entries'][$index];
-                                    ?>
-                                    <input type="hidden" name="edit_index" value="<?php echo $index; ?>">
-                                <?php endif; ?>
-                                
-                                <label for="name">Name:</label>
-                                <input type="text" id="name" name="name" 
-                                       value="<?php echo isset($entry) ? htmlspecialchars($entry['name']) : ''; ?>" 
-                                       placeholder="Enter name" required>
+    <?php if (isset($_GET['edit'])): ?>
+        <?php 
+            $index = $_GET['edit'];
+            $entry = $_SESSION['entries'][$index];
+        ?>
+        <input type="hidden" name="edit_index" value="<?php echo $index; ?>">
+    <?php endif; ?>
 
-                                <label for="age">Age:</label>
-                                <input type="number" id="age" name="age" 
-                                       value="<?php echo isset($entry) ? htmlspecialchars($entry['age']) : ''; ?>" 
-                                       placeholder="Enter age" required>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" 
+           value="<?php echo isset($entry) ? htmlspecialchars($entry['name']) : ''; ?>" 
+           placeholder="Enter name" required>
 
-                                <label for="gender">Gender:</label>
-                                <select id="gender" name="gender" required>
-                                <option value="" disabled selected>Select gender</option>
-                                <option value="Male" <?php echo isset($entry) && $entry['gender'] === 'Male' ? 'selected' : ''; ?>>Male</option>
-                                <option value="Female" <?php echo isset($entry) && $entry['gender'] === 'Female' ? 'selected' : ''; ?>>Female</option>
-                                </select>
-                                <button type="submit" name="submit"><?php echo isset($_GET['edit']) ? 'Update' : 'Add'; ?> Form</button>
-                            </form>
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" 
+           value="<?php echo isset($entry) ? htmlspecialchars($entry['age']) : ''; ?>" 
+           placeholder="Enter age" required>
+
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender" required>
+        <option value="" disabled selected>Select gender</option>
+        <option value="Male" <?php echo isset($entry) && $entry['gender'] === 'Male' ? 'selected' : ''; ?>>Male</option>
+        <option value="Female" <?php echo isset($entry) && $entry['gender'] === 'Female' ? 'selected' : ''; ?>>Female</option>
+    </select>
+
+ 
+    <label for="campus">Campus:</label>
+    <select id="campus" name="campus" required>
+        <option value="" disabled selected>Select campus</option>
+        <option value="Sta. Cruz" <?php echo isset($entry) && $entry['campus'] === 'Sta. Cruz Campus' ? 'selected' : ''; ?>>Sta. Cruz Campus</option>
+        <option value="Boac" <?php echo isset($entry) && $entry['campus'] === 'Boac Campus' ? 'selected' : ''; ?>>Boac Campus</option>
+        <option value="Torrijos" <?php echo isset($entry) && $entry['campus'] === 'Torrijos Campus' ? 'selected' : ''; ?>>Torrijos Campus</option>
+        <option value="Gasan" <?php echo isset($entry) && $entry['campus'] === 'Gasan Campus' ? 'selected' : ''; ?>>Gasan Campus</option>
+    </select>
+
+  
+    <label for="college">College:</label>
+    <select id="college" name="college" required>
+        <option value="" disabled selected>Select college</option>
+        <option value="Governance" <?php echo isset($entry) && $entry['college'] === 'Governance' ? 'selected' : ''; ?>>College of Governance</option>
+        <option value="Computing Sciences" <?php echo isset($entry) && $entry['college'] === 'Computing Sciences' ? 'selected' : ''; ?>>College of Computing Sciences</option>
+        <option value="Engineering" <?php echo isset($entry) && $entry['college'] === 'Engineering' ? 'selected' : ''; ?>>College of Engineering</option>
+        <option value="Accountancy" <?php echo isset($entry) && $entry['college'] === 'Accountancy' ? 'selected' : ''; ?>>College of Accountancy</option>
+    </select>
+
+    <button type="submit" name="submit"><?php echo isset($_GET['edit']) ? 'Update' : 'Add'; ?> Form</button>
+</form>
+
                             <br>
                             <a href="showDetails.php">View Details</a>
                         </div> 
